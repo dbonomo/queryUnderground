@@ -1,6 +1,6 @@
 var FreshUrl;
 
-// grab variables from query string
+// function to grab variables from query string
 function getQueryVariable(variable)
 {
    var query = window.location.search.substring(1);
@@ -15,29 +15,29 @@ function getQueryVariable(variable)
 // Store UTM variables as localstorage
 // Check browser support
 if (typeof(Storage) !== "undefined") {
-    // Store the variable, if it's in the query string
+    // Store each variable, if it's in the query string
     if (getQueryVariable("utm_source") !== false) {
-      var utmSource = getQueryVariable("utm_source");
+      var utmSource = decodeURI(getQueryVariable("utm_source"));
       localStorage.setItem("utmSource", utmSource);
     }
     if (getQueryVariable("utm_medium") !== false) {
-      var utmMedium = getQueryVariable("utm_medium");
+      var utmMedium = decodeURI(getQueryVariable("utm_medium"));
       localStorage.setItem("utmMedium", utmMedium);
     }
     if (getQueryVariable("utm_term") !== false) {
-      var utmTerm = getQueryVariable("utm_term");
+      var utmTerm = decodeURI(getQueryVariable("utm_term"));
       localStorage.setItem("utmTerm", utmTerm);
     }
     if (getQueryVariable("utm_content") !== false) {
-      var utmContent = getQueryVariable("utm_content");
+      var utmContent = decodeURI(getQueryVariable("utm_content"));
       localStorage.setItem("utmContent", utmContent);
     }
     if (getQueryVariable("utm_campaign") !== false) {
-      var utmCampaign = getQueryVariable("utm_campaign");
+      var utmCampaign = decodeURI(getQueryVariable("utm_campaign"));
       localStorage.setItem("utmCampaign", utmCampaign);
     }
 
-    // Retrieve and store as variables
+    // Retrieve from local and store as variables
     var localutmSource = localStorage.getItem("utmSource");
     var localutmMedium = localStorage.getItem("utmMedium");
     var localutmTerm = localStorage.getItem("utmTerm");
@@ -51,25 +51,68 @@ if (typeof(Storage) !== "undefined") {
     console.log(localutmContent);
     console.log(localutmCampaign);
 
-    // write variables into the hidden fields with corresponding names
-    document.getElementsByName("utmSource")[0].value = localutmSource;
-    document.getElementsByName("utmMedium")[0].value = localutmMedium;
-    document.getElementsByName("utmTerm")[0].value = localutmTerm;
-    document.getElementsByName("utmContent")[0].value = localutmContent;
-    document.getElementsByName("utmCampaign")[0].value = localutmCampaign;
+
+    // write variables into the hidden fields with corresponding names if they exist
+    if ( localutmSource !== null) {
+      if(document.getElementsByName("utmSource")[0]){
+        document.getElementsByName("utmSource")[0].value = localutmSource;
+      }
+    }
+    if ( localutmMedium !== null) {
+      if(document.getElementsByName("utmMedium")[0]){
+        document.getElementsByName("utmMedium")[0].value = localutmMedium;
+      }
+    }
+    if ( localutmTerm !== null) {
+      if(document.getElementsByName("utmTerm")[0]){
+        document.getElementsByName("utmTerm")[0].value = localutmTerm;
+      }
+    }
+    if ( localutmContent !== null) {
+      if(document.getElementsByName("utmContent")[0]){
+        document.getElementsByName("utmContent")[0].value = localutmContent;
+      }
+    }
+    if ( localutmCampaign !== null) {
+      if(document.getElementsByName("utmCampaign")[0]){
+        document.getElementsByName("utmCampaign")[0].value = localutmCampaign;
+      }
+    }
 } else {
   // if no localstorage, gets UTM variables from the query string
-    var utmSource = getQueryVariable("utm_source");
-    var utmMedium = getQueryVariable("utm_medium");
-    var utmTerm = getQueryVariable("utm_term");
-    var utmContent = getQueryVariable("utm_content");
-    var utmCampaign = getQueryVariable("utm_campaign");
+    var utmSource = decodeURI(getQueryVariable("utm_source"));
+    var utmMedium = decodeURI(getQueryVariable("utm_medium"));
+    var utmTerm = decodeURI(getQueryVariable("utm_term"));
+    var utmContent = decodeURI(getQueryVariable("utm_content"));
+    var utmCampaign = decodeURI(getQueryVariable("utm_campaign"));
     console.log("Sorry, your browser does not support Web Storage...");
-    console.log(utmSource);
-    console.log(utmMedium);
-    console.log(utmTerm);
-    console.log(utmContent);
-    console.log(utmCampaign);
+
+    // and writes the values into the hidden fields
+    if ( utmSource !== null) {
+      if(document.getElementsByName("utmSource")[0]){
+        document.getElementsByName("utmSource")[0].value = utmSource;
+      }
+    }
+    if ( utmMedium !== null) {
+      if(document.getElementsByName("utmMedium")[0]){
+        document.getElementsByName("utmMedium")[0].value = utmMedium;
+      }
+    }
+    if ( utmTerm !== null) {
+      if(document.getElementsByName("utmTerm")[0]){
+        document.getElementsByName("utmTerm")[0].value = utmTerm;
+      }
+    }
+    if ( utmContent !== null) {
+      if(document.getElementsByName("utmContent")[0]){
+        document.getElementsByName("utmContent")[0].value = utmContent;
+      }
+    }
+    if ( utmCampaign !== null) {
+      if(document.getElementsByName("utmCampaign")[0]){
+        document.getElementsByName("utmCampaign")[0].value = utmCampaign;
+      }
+    }
 }
 
 // Check for UTM variables in localstorage
@@ -358,13 +401,10 @@ FreshUrl = (function() {
 
 if (typeof _freshenUrlAfter !== "undefined" && _freshenUrlAfter !== null) {
   window.freshUrl = new FreshUrl(_freshenUrlAfter);
-  console.log('the first one');
 } else if (window.dataLayer) {
   dataLayer.push(function() {
     return window.freshUrl = new FreshUrl(FreshUrl.librariesPresent());
-    console.log('the second one');
   });
 } else {
   window.freshUrl = new FreshUrl(FreshUrl.librariesPresent());
-  console.log('the third one');
 }
