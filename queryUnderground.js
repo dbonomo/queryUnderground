@@ -13,6 +13,7 @@ function getQueryVariable(variable)
 }
 
 // Store UTM variables as localstorage
+
 // Check browser support
 if (typeof(Storage) !== "undefined") {
     // Store each variable, if it's in the query string
@@ -53,29 +54,35 @@ if (typeof(Storage) !== "undefined") {
 
 
     // write variables into the hidden fields with corresponding names if they exist
+// Updates for custom field names
+// <input name='input_13' id='input_1_13' type='hidden' class='gform_hidden' value='utmSource' />
+// <input name='input_9' id='input_1_9' type='hidden' class='gform_hidden' value='utmMedium' />
+// <input name='input_10' id='input_1_10' type='hidden' class='gform_hidden' value='utmTerm' />
+// <input name='input_11' id='input_1_11' type='hidden' class='gform_hidden' value='utmContent' />
+// <input name='input_12' id='input_1_12' type='hidden' class='gform_hidden' value='utmCampaign' />
     if ( localutmSource !== null) {
-      if(document.getElementsByName("utmSource")[0]){
-        document.getElementsByName("utmSource")[0].value = localutmSource;
+      if(document.getElementsByName("input_13")[0]){
+        document.getElementsByName("input_13")[0].value = localutmSource;
       }
     }
     if ( localutmMedium !== null) {
-      if(document.getElementsByName("utmMedium")[0]){
-        document.getElementsByName("utmMedium")[0].value = localutmMedium;
+      if(document.getElementsByName("input_9")[0]){
+        document.getElementsByName("input_9")[0].value = localutmMedium;
       }
     }
     if ( localutmTerm !== null) {
-      if(document.getElementsByName("utmTerm")[0]){
-        document.getElementsByName("utmTerm")[0].value = localutmTerm;
+      if(document.getElementsByName("input_10")[0]){
+        document.getElementsByName("input_10")[0].value = localutmTerm;
       }
     }
     if ( localutmContent !== null) {
-      if(document.getElementsByName("utmContent")[0]){
-        document.getElementsByName("utmContent")[0].value = localutmContent;
+      if(document.getElementsByName("input_11")[0]){
+        document.getElementsByName("input_11")[0].value = localutmContent;
       }
     }
     if ( localutmCampaign !== null) {
-      if(document.getElementsByName("utmCampaign")[0]){
-        document.getElementsByName("utmCampaign")[0].value = localutmCampaign;
+      if(document.getElementsByName("input_12")[0]){
+        document.getElementsByName("input_12")[0].value = localutmCampaign;
       }
     }
 } else {
@@ -89,28 +96,28 @@ if (typeof(Storage) !== "undefined") {
 
     // and writes the values into the hidden fields
     if ( utmSource !== null) {
-      if(document.getElementsByName("utmSource")[0]){
-        document.getElementsByName("utmSource")[0].value = utmSource;
+      if(document.getElementsByName("input_13")[0]){
+        document.getElementsByName("input_13")[0].value = utmSource;
       }
     }
     if ( utmMedium !== null) {
-      if(document.getElementsByName("utmMedium")[0]){
-        document.getElementsByName("utmMedium")[0].value = utmMedium;
+      if(document.getElementsByName("input_9")[0]){
+        document.getElementsByName("input_9")[0].value = utmMedium;
       }
     }
     if ( utmTerm !== null) {
-      if(document.getElementsByName("utmTerm")[0]){
-        document.getElementsByName("utmTerm")[0].value = utmTerm;
+      if(document.getElementsByName("input_10")[0]){
+        document.getElementsByName("input_10")[0].value = utmTerm;
       }
     }
     if ( utmContent !== null) {
-      if(document.getElementsByName("utmContent")[0]){
-        document.getElementsByName("utmContent")[0].value = utmContent;
+      if(document.getElementsByName("input_11")[0]){
+        document.getElementsByName("input_11")[0].value = utmContent;
       }
     }
     if ( utmCampaign !== null) {
-      if(document.getElementsByName("utmCampaign")[0]){
-        document.getElementsByName("utmCampaign")[0].value = utmCampaign;
+      if(document.getElementsByName("input_12")[0]){
+        document.getElementsByName("input_12")[0].value = utmCampaign;
       }
     }
 }
