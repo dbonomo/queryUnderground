@@ -46,11 +46,11 @@ if (typeof(Storage) !== "undefined") {
     var localutmCampaign = localStorage.getItem("utmCampaign");
 
     // log it
-    console.log(localutmSource);
-    console.log(localutmMedium);
-    console.log(localutmTerm);
-    console.log(localutmContent);
-    console.log(localutmCampaign);
+    // console.log(localutmSource);
+    // console.log(localutmMedium);
+    // console.log(localutmTerm);
+    // console.log(localutmContent);
+    // console.log(localutmCampaign);
 
 
     // write variables into the hidden fields with corresponding names if they exist
