@@ -60,29 +60,36 @@ if (typeof(Storage) !== "undefined") {
 // <input name='input_10' id='input_1_10' type='hidden' class='gform_hidden' value='utmTerm' />
 // <input name='input_11' id='input_1_11' type='hidden' class='gform_hidden' value='utmContent' />
 // <input name='input_12' id='input_1_12' type='hidden' class='gform_hidden' value='utmCampaign' />
+
+// updates the custom fields again:
+// <input type="hidden" id="utmSource" name="utmSource" class="hidden" value="utmSource">
+// <input type="hidden" id="utmMedium" name="utmMedium" class="hidden" value="utmMedium">
+// <input type="hidden" id="utmTerm" name="utmTerm" class="hidden" value="utmTerm">
+// <input type="hidden" id="utmContent" name="utmContent" class="hidden" value="utmContent">
+// <input type="hidden" id="utmCampaign" name="utmCampaign" class="hidden" value="utmCampaign">
     if ( localutmSource !== null) {
-      if(document.getElementsByName("input_13")[0]){
-        document.getElementsByName("input_13")[0].value = localutmSource;
+      if(document.getElementsByName("utmSource")[0]){
+        document.getElementsByName("utmSource")[0].value = localutmSource;
       }
     }
     if ( localutmMedium !== null) {
-      if(document.getElementsByName("input_9")[0]){
-        document.getElementsByName("input_9")[0].value = localutmMedium;
+      if(document.getElementsByName("utmMedium")[0]){
+        document.getElementsByName("utmMedium")[0].value = localutmMedium;
       }
     }
     if ( localutmTerm !== null) {
-      if(document.getElementsByName("input_10")[0]){
-        document.getElementsByName("input_10")[0].value = localutmTerm;
+      if(document.getElementsByName("utmTerm")[0]){
+        document.getElementsByName("utmTerm")[0].value = localutmTerm;
       }
     }
     if ( localutmContent !== null) {
-      if(document.getElementsByName("input_11")[0]){
-        document.getElementsByName("input_11")[0].value = localutmContent;
+      if(document.getElementsByName("utmContent")[0]){
+        document.getElementsByName("utmContent")[0].value = localutmContent;
       }
     }
     if ( localutmCampaign !== null) {
-      if(document.getElementsByName("input_12")[0]){
-        document.getElementsByName("input_12")[0].value = localutmCampaign;
+      if(document.getElementsByName("utmCampaign")[0]){
+        document.getElementsByName("utmCampaign")[0].value = localutmCampaign;
       }
     }
 } else {
@@ -96,28 +103,28 @@ if (typeof(Storage) !== "undefined") {
 
     // and writes the values into the hidden fields
     if ( utmSource !== null) {
-      if(document.getElementsByName("input_13")[0]){
-        document.getElementsByName("input_13")[0].value = utmSource;
+      if(document.getElementsByName("utmSource")[0]){
+        document.getElementsByName("utmSource")[0].value = utmSource;
       }
     }
     if ( utmMedium !== null) {
-      if(document.getElementsByName("input_9")[0]){
-        document.getElementsByName("input_9")[0].value = utmMedium;
+      if(document.getElementsByName("utmMedium")[0]){
+        document.getElementsByName("utmMedium")[0].value = utmMedium;
       }
     }
     if ( utmTerm !== null) {
-      if(document.getElementsByName("input_10")[0]){
-        document.getElementsByName("input_10")[0].value = utmTerm;
+      if(document.getElementsByName("utmTerm")[0]){
+        document.getElementsByName("utmTerm")[0].value = utmTerm;
       }
     }
     if ( utmContent !== null) {
-      if(document.getElementsByName("input_11")[0]){
-        document.getElementsByName("input_11")[0].value = utmContent;
+      if(document.getElementsByName("utmContent")[0]){
+        document.getElementsByName("utmContent")[0].value = utmContent;
       }
     }
     if ( utmCampaign !== null) {
-      if(document.getElementsByName("input_12")[0]){
-        document.getElementsByName("input_12")[0].value = utmCampaign;
+      if(document.getElementsByName("utmCampaign")[0]){
+        document.getElementsByName("utmCampaign")[0].value = utmCampaign;
       }
     }
 }
