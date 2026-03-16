@@ -8,7 +8,10 @@ Reference repository for AI agents that need to interact with Adobe Customer Jou
 ├── docs/
 │   ├── authentication.md      # OAuth Server-to-Server auth guide
 │   ├── cja-api.md             # CJA endpoint reference & examples
-│   └── aep-api.md             # AEP endpoint reference & examples
+│   ├── aep-api.md             # AEP endpoint reference & examples
+│   ├── python-cjapy.md        # cjapy Python wrapper reference
+│   ├── python-aepp.md         # aepp Python wrapper reference
+│   └── python-launchpy.md     # launchpy Python wrapper reference
 ├── src/
 │   ├── auth.js                # Reusable auth client (token generation)
 │   ├── cja-client.js          # CJA API client with helper methods
@@ -72,6 +75,18 @@ You need these values from your Adobe Developer Console project:
 | Data Ingestion | Batch and streaming ingest |
 | Identity Service | Identity graphs and namespaces |
 | Flow Service | Source/destination connectors |
+
+## Python wrappers (community)
+
+These excellent community Python libraries wrap the Adobe APIs and are great for agents working in Python:
+
+| Library | Wraps | Install | Docs |
+|---|---|---|---|
+| [**cjapy**](https://github.com/pitchmuc/cjapy) | CJA API | `pip install cjapy` | [python-cjapy.md](docs/python-cjapy.md) |
+| [**aepp**](https://github.com/pitchmuc/aepp) | AEP API (all services) | `pip install aepp` | [python-aepp.md](docs/python-aepp.md) |
+| [**launchpy**](https://github.com/pitchmuc/launchpy) | Launch / Data Collection API | `pip install launchpy` | [python-launchpy.md](docs/python-launchpy.md) |
+
+All three follow the same pattern: generate a config file, import it, instantiate a class, and call methods. See each doc for full method references and usage examples.
 
 ## Resources
 
