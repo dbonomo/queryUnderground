@@ -1,0 +1,19 @@
+{
+  "name": "adobe-api-research",
+  "version": "1.0.0",
+  "description": "Research repo for agents working with Adobe CJA and AEP APIs",
+  "main": "src/auth.js",
+  "scripts": {
+    "cja:report": "node examples/cja-report.js",
+    "cja:dataviews": "node examples/cja-dataviews.js",
+    "aep:schemas": "node examples/aep-schemas.js",
+    "aep:segments": "node examples/aep-segments.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
