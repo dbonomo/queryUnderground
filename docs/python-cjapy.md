@@ -202,6 +202,56 @@ The `Workspace` object is returned by `getReport()`. Key methods:
 | `to_json(filename, orient)` | Export to JSON |
 | `breakdown(index, dimension, n_results=10)` | Break down a row by another dimension |
 
+## RequestCreator class
+
+A helper to build report request payloads programmatically instead of hand-writing JSON.
+
+```python
+req = cjapy.RequestCreator()
+req.setDataViewId('dv_xxx')
+req.setDimension('variables/page')
+req.addMetric('metrics/visits')
+req.addMetric('metrics/orders', attributionModel='lastTouch', lookbackWindow=30)
+req.addGlobalFilter('2025-01-01T00:00:00.000/2025-02-01T00:00:00.000')
+req.setLimit(100)
+
+report = cja.getReport(req.to_dict())
+```
+
+| Method | Description |
+|---|---|
+| `setDimension(dimension)` | Set the report dimension |
+| `setDataViewId(dataViewId)` | Set the data view |
+| `addMetric(metricId, attributionModel=None, lookbackWindow=30, lookbackGranularity="day")` | Add a metric (with optional attribution) |
+| `addGlobalFilter(filterId, adHocFilter)` | Add a filter or date range |
+| `removeGlobalFilter(index, filterId)` | Remove a filter |
+| `addMetricFilter(metricId, filterId, metricIndex, staticRow=False)` | Filter a specific metric |
+| `removeMetricFilter(filterId)` | Remove metric filter |
+| `setDateRange(start_date, end_date)` | Set date range |
+| `updateDateRange(dateRange, shiftingDays, ...)` | Shift dates |
+| `setLimit(limit=100)` | Set result count |
+| `setSearch(itemIds, clause, reset=True)` | Search for dimension values |
+| `setNoneBehavior(returnNones=True)` | Handle None values |
+| `setRepeatInstance(repeat=True)` | Count repeat instances |
+| `setDimensionSort(order="dsc")` | Sort order |
+| `setSampling(sample, upsample=False)` | Set sampling |
+| `to_dict()` | Return as dict |
+| `save(fileName)` | Save to JSON file |
+
+**Attribution models:** `lastTouch`, `firstTouch`, `linear`, `participation`, `sameTouch`, `uShaped`, `jShaped`, `reverseJShaped`, `timeDecay`, `positionBased`, `algorithmic`
+
+**Built-in date ranges** (via `req.dates`): `thisMonth`, `last30daysTillToday`, `lastMonth`, `thisWeek`, `lastWeek`, `last7days`, `yesterday`, `today`, `thisYear`, `lastYear`, etc.
+
+## Operational notes
+
+- **Rate limits:** 120 requests/minute, burst limit of 12 per 6 seconds. Handled automatically by the library.
+- **Concurrency:** CJA servers typically allow 5 simultaneous reports per org.
+- **Single dimension per report:** Use `breakdown()` or `getMultidimensionalReport()` for multi-dimensional analysis.
+- **Output formats:** Most GET methods accept `output="df"` (DataFrame, default) or `output="raw"` (JSON/list).
+- **`n_results="inf"`** fetches all results with automatic pagination.
+- **Caching:** Many methods support `cache=True` / `useCache=True` to avoid redundant API calls.
+- **Logging:** `cja = cjapy.CJA(loggingObject=cjapy.generateLoggingObject(level="DEBUG"))` for debug output.
+
 ## Common usage patterns
 
 ### Pull a report
@@ -236,6 +286,42 @@ report = cja.getMultidimensionalReport(
     metrics=["metrics/pageviews", "metrics/visits"],
     dataViewId="dv_xxx",
     globalFilters=[{"type": "dateRange", "dateRange": "2025-01-01T00:00:00.000/2025-02-01T00:00:00.000"}],
+)
+```
+
+### Build a report with RequestCreator
+
+```python
+req = cjapy.RequestCreator()
+req.setDataViewId('dv_xxx')
+req.setDimension('variables/page')
+req.addMetric('metrics/visits')
+req.addMetric('metrics/orders', attributionModel='lastTouch', lookbackWindow=30)
+req.addGlobalFilter(req.dates['last30daysTillToday'])
+req.setLimit(100)
+
+report = cja.getReport(req.to_dict())
+```
+
+### Breakdown a report row
+
+```python
+report = cja.getReport(request)
+# Break down the first row by product dimension
+breakdown = report.breakdown(index=0, dimension='variables/product', n_results=20)
+```
+
+### Person profiles (for ML feature extraction)
+
+```python
+df = cja.getPersonProfiles(
+    dataviewId='dv_xxx',
+    featureMetrics=['metrics/visits', 'metrics/pageviews', 'metrics/timespent'],
+    targetMetric='metrics/orders',
+    binaryTargetMetric=True,
+    startDate='2025-01-01',
+    endDate='2025-03-31',
+    sampleSize=10000,
 )
 ```
 
