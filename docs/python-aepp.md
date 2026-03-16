@@ -135,6 +135,23 @@ s.createSchema({
 field_groups = s.getFieldGroups()
 ```
 
+### Schema — SchemaManager & FieldGroupManager
+
+Higher-level helpers for inspecting and composing schemas:
+
+```python
+# Inspect a schema
+sm = s.SchemaManager("https://ns.adobe.com/tenant/schemas/xxx")
+sm.searchField("email", partialMatch=True)
+df = sm.to_dataframe()
+
+# Compose a field group
+fgm = s.FieldGroupManager(fieldGroup="fg_id_or_dict", title="My FG")
+fgm.addField("myField", "string", title="My Field")
+fgm.addField("myObj", "object", objectComponents={"sub1": "string", "sub2": "integer"})
+fgm.createFieldGroup()
+```
+
 ### Query Service
 
 ```python
@@ -142,15 +159,27 @@ from aepp import queryservice
 
 qs = queryservice.QueryService()
 
-# Create and run a query
+# Submit a batch query
 query = qs.postQueries(sql="SELECT * FROM my_dataset LIMIT 10", name="test")
 
 # List queries
 queries = qs.getQueries()
 
+# Scheduled queries (API-only feature)
+qs.createSchedule(name="weekly", sql="SELECT * FROM ds", schedule={"schedule": "0 0 * * 1"})
+schedules = qs.getSchedules()
+
 # Interactive query (requires psycopg2 and PSQL connection)
-iq = queryservice.InteractiveQuery()
-df = iq.query("SELECT * FROM my_dataset LIMIT 100")
+conn = qs.connection()
+iq = queryservice.InteractiveQuery2(conn)
+df = iq.query("SELECT * FROM my_dataset LIMIT 100", output="dataframe")
+
+# Query by identity
+df = iq.queryIdentity(
+    identityId="21d67084-398e-4a48-8723-2fd",
+    fields=['_tenant.person.fullname', '_tenant.person.sex'],
+    tableName='myTableName'
+)
 ```
 
 ### Segmentation
@@ -240,13 +269,59 @@ connections = fs.getConnections()
 flows = fs.getFlows()
 ```
 
+### Data Ingestion
+
+```python
+from aepp import ingestion
+
+di = ingestion.DataIngestion()
+
+# Streaming ingestion
+di.streamMessage(inletId="my_inlet_id", data={"key": "value"})
+
+# Batch ingestion
+batch = di.createBatch(datasetId="ds_id", format="json")
+di.uploadSmallFile(batchId=batch['id'], datasetId="ds_id", filePath="data.json")
+di.uploadSmallFileFinish(batchId=batch['id'])
+```
+
+### DataPrep (Mapping)
+
+```python
+from aepp import dataprep
+
+dp = dataprep.DataPrep()
+mapping_sets = dp.getMappingSets()
+dp.validateExpression(expression="trim(firstName)")
+```
+
+### Flow Service — FlowManager
+
+```python
+from aepp import flowservice
+
+fs = flowservice.FlowService()
+
+# Landing Zone operations
+sas_uri = fs.getLandingZoneSASUri()
+contents = fs.exploreLandingZone()
+
+# FlowManager for a specific flow
+fm = fs.FlowManager(flowId="flow_123")
+fm.summary()
+runs = fm.getRuns()
+```
+
 ## Tips
 
 - All modules follow the same pattern: `import module` → `Class()` → `methods()`
 - Use `help(instance.methodName)` to see parameter details
 - Most `get*` methods return lists or dicts; some support `output="df"` for DataFrames
 - The `connectInstance=True` param on `importConfigFile` is key for multi-sandbox workflows
-- `InteractiveQuery` requires a PostgreSQL client (psycopg2) and the AEP Query Service PSQL endpoint
+- `InteractiveQuery` requires PyGreSQL; `InteractiveQuery2` requires psycopg2. Both need PostgreSQL client libraries.
+- Token management and retry logic are handled automatically by the connector
+- Enable logging: pass `loggingObject=aepp.generateLoggingObject(level="DEBUG")` to any class
+- Privacy Service requires a **separate** JWT auth config with specific Privacy API permissions
 
 ## References
 
